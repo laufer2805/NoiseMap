@@ -16,6 +16,11 @@ typedef struct {
     double x, y, z, w;
 } Point;
 
+typedef struct
+{
+    int r, g, b;
+} Color;
+
 struct complex
 {
     double x;
@@ -269,6 +274,17 @@ void GenerateNoiseMap (string seedWord, int sizeX, int sizeY, double startX, dou
 	OpenSimplexNoise RNG;
 	int i, j, seedWordLength = seedWord.length();
 	double rValue, gValue, bValue, seedDouble = 0;
+    Color palette[8];
+
+    //define palette - from Lospec, name SLSO8
+    palette[0] = { 13, 43, 69 };
+    palette[1] = { 32, 60, 86 };
+    palette[2] = { 84, 78, 104 };
+    palette[3] = { 141, 105, 122 };
+    palette[4] = { 208, 129, 89 };
+    palette[5] = { 255, 170, 94 };
+    palette[6] = { 255, 212, 163 };
+    palette[7] = { 255, 236, 214 };
 	
 	for (i = 0; i < seedWordLength; i++)
 	{
@@ -284,20 +300,9 @@ void GenerateNoiseMap (string seedWord, int sizeX, int sizeY, double startX, dou
 	{
 		for (j = 0; j < sizeY; j++)
 		{
-			// grayscale
-			/*
-			double temp = RNG.noise2D (startX + (double)i, startY + (double)j);
-			if (temp < 0) temp *= (-1);
-			matrix[i][j] = (int)temp % 256;
-			*/
-			//rgb
-			rValue = RNG.noise2D (20 * (double)i / sizeX, 20 * (double)j / sizeY);
-			
-			// conversion to pixel values
-			if (rValue < 0) rValue *= (-1);
-			if (gValue < 0) gValue *= (-1);
-			if (bValue < 0) bValue *= (-1);
-			outFile << (int)rValue % 256 << " " << (int)gValue % 256 << " " << (int)bValue % 256 << endl;
+            int randomValue = (int)RNG.noise2D((double)i, (double)j);                                                           // get random int 
+            randomValue = randomValue % 8;                                                                                      // limit to [0, 7] 
+            outFile << palette[randomValue].r << " " << palette[randomValue].g << " " << palette[randomValue].b << endl;        // save random member of palette to pixel at coodinates i, j
 		}
 	}
 
