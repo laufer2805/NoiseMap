@@ -229,54 +229,16 @@ private:
     }
 };
 
-double f (double x)
+// Generates and returns palette as array of Colors
+Color* GeneratePalette (int length)
 {
-	return (exp(x) + exp(-x)) / 2;
+    Color* array = new Color[length];
+    return array;
 }
 
-double g (double x)
+// fills array with colors from Lospec palette SLSO8
+Color* FillPalette(Color* palette, int length)
 {
-	return (exp(x) - exp(-x)) / 2;
-}
-
-complex MandelbrotHelperfunction (complex z, complex c)
-{
-    complex z0;
-    z0.x = z.x*z.x - z.y*z.y + c.x;
-    z0.y = 2*z.x*z.y + 2*c.y;
-    return z0;
-}
-
-double abs(complex z)
-{
-    return sqrt(z.x*z.x + z.y*z.y);
-}
-
-bool isMandelbrot (complex c, int maxIterations = 100, double threshold = 4)
-{
-    int i;
-    complex z;
-    for (i = 0; i < 100; i++)
-    {
-        z = MandelbrotHelperfunction(z, c);
-        if (abs(z) > threshold)
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
-
-void GenerateNoiseMap (string seedWord, int sizeX, int sizeY, double startX, double startY)
-{
-	
-	OpenSimplexNoise RNG;
-	int i, j, seedWordLength = seedWord.length();
-	double rValue, gValue, bValue, seedDouble = 0;
-    Color palette[8];
-
-    //define palette - from Lospec, name SLSO8
     palette[0] = { 13, 43, 69 };
     palette[1] = { 32, 60, 86 };
     palette[2] = { 84, 78, 104 };
@@ -285,13 +247,22 @@ void GenerateNoiseMap (string seedWord, int sizeX, int sizeY, double startX, dou
     palette[5] = { 255, 170, 94 };
     palette[6] = { 255, 212, 163 };
     palette[7] = { 255, 236, 214 };
-	
-	for (i = 0; i < seedWordLength; i++)
-	{
-		seedDouble += (double)seedWord[i];
-	}
-	seedDouble /= (double)seedWordLength;
-	
+}
+
+void GenerateNoiseMap (string seedWord, int sizeX, int sizeY, double startX, double startY)
+{
+	OpenSimplexNoise RNG;                                                                                                       // Instantiates OpenSimplexNoise class
+	int i, j;
+    Color* palette = GeneratePalette(8);                                                                                        // Generates palette as dynamic array
+    palette = FillPalette(palette, 8);                                                                                          // Fills palette and saves to same array
+
+    int seedWordLength = seedWord.length();                                                                                     // Saves seed word to int array
+    int* seedWordArray = new int[seedWordLength];
+    for (i = 0; i < seedWordLength; i++)
+    {
+        seedWordArray[i] = (int)seedWord[i];                                                                                    // Saves each letter as int to array
+    }
+
 	ofstream outFile;
 	outFile.open (seedWord + ".ppm");
 	outFile << "P3" << endl << sizeX << " " << sizeY << endl << 255 << endl;
@@ -300,42 +271,14 @@ void GenerateNoiseMap (string seedWord, int sizeX, int sizeY, double startX, dou
 	{
 		for (j = 0; j < sizeY; j++)
 		{
-            int randomValue = (int)RNG.noise2D((double)i, (double)j);                                                           // get random int 
+                                                                                                                                // get random int 
+            int randomValue = (int)RNG.noise2D(((double)i + startX) * seedWord[RNG.(i, j) % seedWordLength], ((double)j + startY) * seedWord[RNG.(i, j) % seedWordLength]);
             randomValue = randomValue % 8;                                                                                      // limit to [0, 7] 
             outFile << palette[randomValue].r << " " << palette[randomValue].g << " " << palette[randomValue].b << endl;        // save random member of palette to pixel at coodinates i, j
 		}
 	}
 
-	cout << "File Written!" << endl;
-	outFile.close();
-}
-
-
-void GenerateMandelbrotMap (int sizeX, int sizeY)
-{
-	ofstream outFile;
-	cout << "File Opened!" << endl;
-	outFile.open ("MandelBrotMap.pbm");
-	complex c;
-	for (int i = 0; i < sizeX; i++)
-	{
-		for (int j = 0; j < sizeY; j++)
-		{
-			cout << "i = " << i << endl << "j = " << j << endl;
-			c.x = (double)(i - sizeX/2);
-			c.y = (double)(j - sizeY/2);
-			if (isMandelbrot(c) == true)
-			{
-				outFile << "1" << " ";
-			}
-			else
-			{
-				outFile << "0" << " ";
-			}
-		}
-		outFile << endl;
-	}
-	cout << "File Generated" << endl;
+	cout << "File Written!" << endl;                                                                                            // Close file and indicate that algo is done
 	outFile.close();
 }
 
