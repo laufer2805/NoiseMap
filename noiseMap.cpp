@@ -247,10 +247,9 @@ Color* FillPalette(Color* palette, int length)
     palette[5] = { 255, 170, 94 };
     palette[6] = { 255, 212, 163 };
     palette[7] = { 255, 236, 214 };
-    return palette;
 }
 
-void GenerateNoiseMap (string seedWord, int sizeX, int sizeY, int startX, int startY)
+void GenerateNoiseMap (string seedWord, int sizeX, int sizeY, double startX, double startY)
 {
 	OpenSimplexNoise RNG;                                                                                                       // Instantiates OpenSimplexNoise class
 	int i, j;
@@ -262,27 +261,29 @@ void GenerateNoiseMap (string seedWord, int sizeX, int sizeY, int startX, int st
     for (i = 0; i < seedWordLength; i++)
     {
         seedWordArray[i] = (int)seedWord[i];                                                                                    // Saves each letter as int to array
-        if (seedWordArray[i] < 0) seedWordArray[i] *= (-1);                                                                     // if nonstandard letter used int will be negative
     }
 
 	ofstream outFile;
 	outFile.open (seedWord + ".ppm");
-	
 	outFile << "P3" << endl << sizeX << " " << sizeY << endl << 255 << endl;
+<<<<<<< HEAD
 	
+	int** image = new int*[sizeX];
 	
+	for (i = 0; i < sizeX; i++)
+		image[i] = new int[sizeY];
+=======
+>>>>>>> parent of d08c2e6 (Compiled and tested)
 
 	for (i = 0; i < sizeX; i++)
 	{
 		for (j = 0; j < sizeY; j++)
-		{ 
-            int temp = (int)RNG.noise2D((double)i, (double)j);
-            if (temp < 0) temp *= (-1);
-            int randomLetter = seedWordArray[temp % seedWordLength];															// random letter from seedWord as int
-            int randomValue = (int)RNG.noise3D((double)(startX + i), (double)(startY + j), (double)randomLetter);				// get random int
-            if (randomValue < 0) randomValue *= (-1);																			// check if negative number
+		{
+                                                                                                                                // get random int 
+            int randomValue = (int)RNG.noise2D(((double)i + startX) * seedWord[RNG.(i, j) % seedWordLength], ((double)j + startY) * seedWord[RNG.(i, j) % seedWordLength]);
             randomValue = randomValue % 8;                                                                                      // limit to [0, 7] 
-            outFile << palette[randomValue].r << " " << palette[randomValue].g << " " << palette[randomValue].b << endl;        // save random member of palette to pixel at coodinates i, j
+            image[i][j] = randomValue;
+            outFile << palette[image[i][j]].r << " " << palette[image[i][j]].g << " " << palette[image[i][j]].b << endl;        // save random member of palette to pixel at coodinates i, j
 		}
 	}
 
@@ -292,24 +293,21 @@ void GenerateNoiseMap (string seedWord, int sizeX, int sizeY, int startX, int st
 
 int main (void)
 {
-	// Instagram native resolution: 1080 x 1080
-    
-    string seedWord;
-    int sizeX, sizeY, startX, startY;
-	cout << "Enter seed word: ";
-	getline(cin, seedWord);
-    cout << "Enter resolution: \nWidth: ";
-    cin >> sizeX;
-    cout << "Height: ";
-    cin >> sizeY;
-    cout << "Enter starting point: \nx = ";
-    cin >> startX;
-    cout << "y = ";
-    cin >> startY;
+	/*
+	 * define extents of matrix
+	 * generate matrix and fill it with pseudorandom numbers
+	 * limit generated numbers to range [0, 255]
+	 * save matrix to file
+	 * */
 	
-	cout << "Program started!" << endl;
-	
-	GenerateNoiseMap(seedWord, sizeX, sizeY, startX, startY);
+<<<<<<< HEAD
+	GenerateNoiseMap("Blaze It", 1080, 1080, 420, 69);
+=======
+	// generate and fill matrix
+	cout << "Program Started!" << endl;
+	// seedWordLength 6
+	GenerateNoiseMap ("123456", 1920, 1080, 0, 0);
+>>>>>>> parent of d08c2e6 (Compiled and tested)
 	
 	
 	return 0;
