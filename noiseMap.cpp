@@ -247,7 +247,18 @@ Color* FillPalette(Color* palette, int length)
     palette[5] = { 255, 170, 94 };
     palette[6] = { 255, 212, 163 };
     palette[7] = { 255, 236, 214 };
+    return palette;
 }
+
+bool IsPrime (int n)
+{
+	if (n == 1) return false;
+	for (int i = 0; i <= sqrt(n); i++)
+		if (n % i == 0)
+			return false;
+	return true;
+}
+
 
 void GenerateNoiseMap (string seedWord, int sizeX, int sizeY, double startX, double startY)
 {
@@ -265,28 +276,77 @@ void GenerateNoiseMap (string seedWord, int sizeX, int sizeY, double startX, dou
 
 	ofstream outFile;
 	outFile.open (seedWord + ".ppm");
+	
 	outFile << "P3" << endl << sizeX << " " << sizeY << endl << 255 << endl;
-<<<<<<< HEAD
 	
 	int** image = new int*[sizeX];
 	
 	for (i = 0; i < sizeX; i++)
 		image[i] = new int[sizeY];
-=======
->>>>>>> parent of d08c2e6 (Compiled and tested)
-
+	
+	cout << "Initial draw!" << endl;
+	for (i = 0; i < sizeX; i++)
+	{
+		for (j = 0; j < sizeY; j++)
+		{ 
+            int randomLetter = (int)RNG.noise2D((double)(startX + i), (double)(startY + j));
+            if (randomLetter < 0) randomLetter *= (-1);
+            randomLetter = randomLetter % seedWordLength;
+            double temp = RNG.noise2D((double)(startX + i + randomLetter), (double)(startY + j + randomLetter));								// get random double
+            temp *= 10;																											// multiply double by 10
+            int randomValue = (int)temp;																						// intcast double
+            if (randomValue < 0) randomValue *= (-1);																			// check if negative number
+            randomValue = (randomValue + 1) % 8;                                                                                      // limit to [0, 7] 
+            image[i][j] = randomValue;
+		}
+	}
+	
+	// draw circle at random
+	if (seedWordLength < 8)
+	{
+		cout << "Error 1: word too small, need at least 8 characters" << endl;
+		return;
+	}
+	cout << "Drawing circle!" << endl;
+	int centerX = (int)RNG.noise2D ((double)seedWordArray[0], (double)seedWordArray[1]);
+	if (centerX < 0) centerX *= (-1);
+	centerX = centerX % sizeX;
+	int centerY = (int)RNG.noise2D ((double)seedWordArray[2], (double)seedWordArray[3]);
+	if (centerY < 0) centerY *= (-1);
+	centerY = centerY % sizeY;
+	int radius;
+	int min, cnt = 0;
+	if (sizeX < sizeY)
+		min = sizeX;
+	else
+		min = sizeY;
+	do
+	{
+		radius = (int)RNG.noise2D ((double)seedWordArray[4] + 0.1 * cnt, (double)seedWordArray[5] + 0.1 * cnt);
+		cnt++;
+	} while (radius <= 0 || radius >= min / 2);
+	int colorOfCircle = (int)RNG.noise2D ((double)seedWordArray[6], (double)seedWordArray[7]);
+	if (colorOfCircle < 0) colorOfCircle *= (-1);
+	colorOfCircle = colorOfCircle % 8;
+	cout << "Center: " << centerX << " " << centerY << endl << "Radius: " << radius << endl<< "Color: " << colorOfCircle << endl;
+	
 	for (i = 0; i < sizeX; i++)
 	{
 		for (j = 0; j < sizeY; j++)
 		{
-            double randomX = RNG.noise2D((double)i, (double)j);                                                                 // get random double from coordinates i, j
-            if (randomX < 0) randomX *= (-1);                                                                                   // abs of random double
-            double randomY = (double)seedWordArray[randomX % seedWordLength];                                                   // get random letter from seedWord
-            int randomValue = (int)RNG.noise2D(randomX, randomY);                                                               // get random int value from random double and random letter
-            if (randomValue < 0) randomValue *= (-1);                                                                           // abs of random int
-            randomValue = randomValue % 8;                                                                                      // limit to [0, 7]
-            image[i][j] = randomValue;                                                                                          // save to array
-            outFile << palette[image[i][j]].r << " " << palette[image[i][j]].g << " " << palette[image[i][j]].b << endl;        // save array value to .ppm
+			if (pow(i - centerX, 2) + pow(j - centerY, 2) <= pow(radius, 2))
+			{
+				image[i][j] = colorOfCircle;
+			}
+		}
+	}
+	
+	cout << "Writing file!" << endl;
+	for (i = 0; i < sizeX; i++)
+	{
+		for (j = 0; j < sizeY; j++)
+		{
+			outFile << palette[image[i][j]].r << " " << palette[image[i][j]].g << " " << palette[image[i][j]].b << endl;
 		}
 	}
 
@@ -296,21 +356,9 @@ void GenerateNoiseMap (string seedWord, int sizeX, int sizeY, double startX, dou
 
 int main (void)
 {
-	/*
-	 * define extents of matrix
-	 * generate matrix and fill it with pseudorandom numbers
-	 * limit generated numbers to range [0, 255]
-	 * save matrix to file
-	 * */
+	cout << "Program started!" << endl;
 	
-<<<<<<< HEAD
-	GenerateNoiseMap("Blaze It", 1080, 1080, 420, 69);
-=======
-	// generate and fill matrix
-	cout << "Program Started!" << endl;
-	// seedWordLength 6
-	GenerateNoiseMap ("123456", 1920, 1080, 0, 0);
->>>>>>> parent of d08c2e6 (Compiled and tested)
+	GenerateNoiseMap("zobene pahuljice", 270, 270, 0, 0);
 	
 	
 	return 0;
