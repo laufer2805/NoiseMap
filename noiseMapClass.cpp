@@ -249,69 +249,149 @@ Color* FillPalette(Color* palette, int length)
     palette[7] = { 255, 236, 214 };
 }
 
-void GenerateNoiseMap (string seedWord, int sizeX, int sizeY, double startX, double startY)
+class NoiseMap
 {
-	OpenSimplexNoise RNG;                                                                                                       // Instantiates OpenSimplexNoise class
-	int i, j;
-    Color* palette = GeneratePalette(8);                                                                                        // Generates palette as dynamic array
-    palette = FillPalette(palette, 8);                                                                                          // Fills palette and saves to same array
-
-    int seedWordLength = seedWord.length();                                                                                     // Saves seed word to int array
-    int* seedWordArray = new int[seedWordLength];
-    for (i = 0; i < seedWordLength; i++)
+    /*
+        DrawCircle -> 4 random numbers -> 8 seed numbers
+    */
+private:
+    // helper functions
+    bool IsPrime(int number)
     {
-        seedWordArray[i] = (int)seedWord[i];                                                                                    // Saves each letter as int to array
+        if (number == 1 || number == 0) return false;
+        for (int i = 0; i < sqrt(number); i++)
+        {
+            if (number % i == 0) return false;
+        }
+        return true;
     }
 
-	ofstream outFile;
-	outFile.open (seedWord + ".ppm");
-	outFile << "P3" << endl << sizeX << " " << sizeY << endl << 255 << endl;
-<<<<<<< HEAD
-	
-	int** image = new int*[sizeX];
-	
-	for (i = 0; i < sizeX; i++)
-		image[i] = new int[sizeY];
-=======
->>>>>>> parent of d08c2e6 (Compiled and tested)
+public:
+    string seedWord;
+    int sizeX, sizeY, startX, startY, paletteSize;
+    OpenSimplexNoise rng;
+    int** image;                                                                                    // double array of ints contains index of color in palette
+    Color* palette;
+    
+    // Generates and returns palette as array of Colors
+    void GeneratePalette ()
+    {
+        palette = new Color[paletteSize];
+    }
+    // fills array with colors from Lospec palette SLSO8
+    void FillPalette ()
+    {
+        palette[0] = { 13, 43, 69 };
+        palette[1] = { 32, 60, 86 };
+        palette[2] = { 84, 78, 104 };
+        palette[3] = { 141, 105, 122 };
+        palette[4] = { 208, 129, 89 };
+        palette[5] = { 255, 170, 94 };
+        palette[6] = { 255, 212, 163 };
+        palette[7] = { 255, 236, 214 };
+    }
 
-	for (i = 0; i < sizeX; i++)
-	{
-		for (j = 0; j < sizeY; j++)
-		{
-            double randomX = RNG.noise2D((double)i, (double)j);                                                                 // get random double from coordinates i, j
-            if (randomX < 0) randomX *= (-1);                                                                                   // abs of random double
-            double randomY = (double)seedWordArray[randomX % seedWordLength];                                                   // get random letter from seedWord
-            int randomValue = (int)RNG.noise2D(randomX, randomY);                                                               // get random int value from random double and random letter
-            if (randomValue < 0) randomValue *= (-1);                                                                           // abs of random int
-            randomValue = randomValue % 8;                                                                                      // limit to [0, 7]
-            image[i][j] = randomValue;                                                                                          // save to array
-            outFile << palette[image[i][j]].r << " " << palette[image[i][j]].g << " " << palette[image[i][j]].b << endl;        // save array value to .ppm
-		}
-	}
 
-	cout << "File Written!" << endl;                                                                                            // Close file and indicate that algo is done
-	outFile.close();
-}
+    void GenerateImageArray ()
+    {
+        image = new int* [sizeX];
+        for (int i = 0; i < sizeX; i++)
+        {
+            image[i] = new int[sizeY];
+        }
+    }
+
+    void DrawCircle (int centerX, int centerY, int radius, int colorIndex)
+    {
+        for (int i = centerX - radius; i < centerX + radius; i++)
+        {
+            for (int j = centerY - radius; i < centerY + radius; j++)
+            {
+                if (pow(i - centerX, 2) + pow(j - centerY, 2) < pow(radius, 2))
+                {
+                    image[i][j] = colorIndex;
+                }
+            }
+        }
+    }
+
+    void FillArray ()
+    {
+        int seedWordLength = seedWord.length();
+        int sizeMin;
+        if (sizeX < sizeY) sizeMin = sizeX;
+        sizeMin = sizeY;
+        int* seedWordArray = new int[seedWordLength];
+        for (int i = 0; i < seedWordLength; i++)
+        {
+            seedWordArray[i] = (int)seedWord[i];
+        }
+        
+        for (int i = 0; i < sizeX; i++)
+        {
+            for (int j = 0; j < sizeX; j++)
+            {
+                int temp = (int)rng.noise2D((double)(i + sizeX), (double)(j + sizeY));
+                if (temp < 0) temp *= (-1);
+                if (IsPrime(temp) == true)
+                {
+                    DrawCircle(i, j, temp % sizeMin, seedWordArray[temp % seedWordLength] % paletteSize);
+                }
+                else 
+                {
+                    image[i][j] = temp % paletteSize;
+                }
+            }
+        }
+    }
+
+    void PrintArrayToFile ()
+    {
+        ofstream outFile;
+        outFile.open(seedWord + ".ppm");
+        outFile << "P3" << endl << sizeX << " " << sizeY << endl << 255 << endl;
+        for (int i = 0; i < sizeX; i++)
+        {
+            for (int j = 0;j < sizeY; j++)
+            {
+                outFile << palette[image[i][j]].r << " " << palette[image[i][j]].g << " " << palette[image[i][j]].b << endl;
+            }
+        }
+    }
+
+    // Run this function!
+    void GenerateNoiseMap()
+    {
+        // Input values from user
+        cout << "Input seed word: ";
+        std::getline(std::cin, name);
+        cout << "Input sizeX: ";
+        cin >> sizeX;
+        cout << "Input sizeY: ";
+        cin >> sizeY;
+        cout << "Input startX";
+        cin >> startX;
+        cout << "Input startY";
+        cin >> startY;
+
+        // Generating palette
+        paletteSize = 8;
+        GeneratePalette();
+        FillPalette();
+
+        cout << "Generating initial image!" << endl;
+        GenerateImageArray();
+        cout << "Filling array!" << endl;
+        FillArray();
+        cout << "Printing to file!" << endl;
+        PrintArrayToFile();
+        cout << "File done!" << endl;
+    }
+};
 
 int main (void)
 {
-	/*
-	 * define extents of matrix
-	 * generate matrix and fill it with pseudorandom numbers
-	 * limit generated numbers to range [0, 255]
-	 * save matrix to file
-	 * */
-	
-<<<<<<< HEAD
-	GenerateNoiseMap("Blaze It", 1080, 1080, 420, 69);
-=======
-	// generate and fill matrix
-	cout << "Program Started!" << endl;
-	// seedWordLength 6
-	GenerateNoiseMap ("123456", 1920, 1080, 0, 0);
->>>>>>> parent of d08c2e6 (Compiled and tested)
-	
-	
+    NoiseMap nm;
+    nm.GenerateNoiseMap();
 	return 0;
 }
