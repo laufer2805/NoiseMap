@@ -286,6 +286,29 @@ private:
         }
         return sum;
     }
+    
+    double Range (double number,double min, double max)
+    {
+		double decimals = number - (int)number;
+		int numberInt = (int)number;
+		int range = (int)max - (int)min;
+		numberInt = numberInt % range;
+		return (double)numberInt + min + decimals;
+	}
+    
+    double* GenerateSequence (double seed, int size)
+    {
+		// for size < 10
+		double* sequence = new double[size];
+		int iterator = 0;
+		for (double i = 0; i < size; i++)
+		{
+			double temp1 = sin(Exp(Range(i, ), temp2 = Exp(sin(seed + (double)i/(double)size));
+			sequence[iterator] = rng.noise2D(temp1, temp2);
+			iterator++;
+		}
+		return sequence;
+	}
 
 public:
     string seedWord;
@@ -354,7 +377,7 @@ public:
             {
                 int temp = (int)rng.noise2D(Exp((double)(i / sizeX)), Exp((double)(j / sizeY)));
                 if (temp < 0) temp *= (-1);
-                if (IsPrime(temp) == true)
+                if (IsPrime(temp) == true)																		// ovaj section treba prepraviti - tu se poziva noise2D
                 {
                     DrawCircle(i, j, temp % sizeMin, seedWordArray[temp % seedWordLength] % paletteSize);
                 }
@@ -385,14 +408,14 @@ public:
     {
         // Input values from user
         cout << "Input seed word: ";
-        std::getline(std::cin, name);
+        std::getline(std::cin, seedWord);
         cout << "Input sizeX: ";
         cin >> sizeX;
         cout << "Input sizeY: ";
         cin >> sizeY;
-        cout << "Input startX";
+        cout << "Input startX: ";
         cin >> startX;
-        cout << "Input startY";
+        cout << "Input startY: ";
         cin >> startY;
 
         // Generating palette
@@ -408,11 +431,28 @@ public:
         PrintArrayToFile();
         cout << "File done!" << endl;
     }
+    void PrintSequence (double seed, int length)
+    {
+		/*double* seq = new double[length];
+		seq = GenerateSequence(seed, length);
+		for (int i = 0; i < length; i++)
+		{
+			cout << seq[i] << "\t";
+		}*/
+		cout << Range(15.5, 0, 5);
+	}
 };
 
 int main (void)
 {
     NoiseMap nm;
-    nm.GenerateNoiseMap();
+    //nm.GenerateNoiseMap();
+    /*for (int i = 0; i < 10; i++)
+    {
+		nm.PrintSequence(i, 5);
+		cout << endl;
+		
+    }*/
+    nm.PrintSequence(5, 2);
 	return 0;
 }
