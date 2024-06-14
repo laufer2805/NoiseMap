@@ -247,6 +247,7 @@ Color* FillPalette(Color* palette, int length)
     palette[5] = { 255, 170, 94 };
     palette[6] = { 255, 212, 163 };
     palette[7] = { 255, 236, 214 };
+    return palette;
 }
 
 class NoiseMap
@@ -264,6 +265,26 @@ private:
             if (number % i == 0) return false;
         }
         return true;
+    }
+    int Factorial(int n)
+    {
+        if (n == 0) return 1;
+        return n * Factorial(n - 1);
+    }
+    double Power(double x, int n)
+    {
+        if (n == 0) return 1;
+        return x * Power(x, n - 1);
+    }
+    double Exp(double x)
+    {
+        int approx = 15;
+        double sum = 0;
+        for (int i = 0; i < approx; i++)
+        {
+            sum += Power(x, i) / (double)Factorial(i);
+        }
+        return sum;
     }
 
 public:
@@ -331,7 +352,7 @@ public:
         {
             for (int j = 0; j < sizeX; j++)
             {
-                int temp = (int)rng.noise2D((double)(i + sizeX), (double)(j + sizeY));
+                int temp = (int)rng.noise2D(Exp((double)(i / sizeX)), Exp((double)(j / sizeY)));
                 if (temp < 0) temp *= (-1);
                 if (IsPrime(temp) == true)
                 {
