@@ -229,6 +229,26 @@ private:
     }
 };
 
+// Generates and returns palette as array of Colors
+Color* GeneratePalette (int length)
+{
+    Color* array = new Color[length];
+    return array;
+}
+
+// fills array with colors from Lospec palette SLSO8
+Color* FillPalette(Color* palette, int length)
+{
+    palette[0] = { 13, 43, 69 };
+    palette[1] = { 32, 60, 86 };
+    palette[2] = { 84, 78, 104 };
+    palette[3] = { 141, 105, 122 };
+    palette[4] = { 208, 129, 89 };
+    palette[5] = { 255, 170, 94 };
+    palette[6] = { 255, 212, 163 };
+    palette[7] = { 255, 236, 214 };
+}
+
 class NoiseMap
 {
     /*
@@ -311,7 +331,7 @@ public:
         {
             for (int j = 0; j < sizeX; j++)
             {
-                int temp = (int)rng.noise2D((double)i/(double)sizeX + (double)startX), (double)j/(double)sizeY + (double)startY);
+                int temp = (int)rng.noise2D((double)(i + sizeX), (double)(j + sizeY));
                 if (temp < 0) temp *= (-1);
                 if (IsPrime(temp) == true)
                 {
@@ -349,12 +369,10 @@ public:
         cin >> sizeX;
         cout << "Input sizeY: ";
         cin >> sizeY;
-        /*cout << "Input startX";
+        cout << "Input startX";
         cin >> startX;
         cout << "Input startY";
-        cin >> startY;*/
-        startX = 0;
-        startY = 0;
+        cin >> startY;
 
         // Generating palette
         paletteSize = 8;
