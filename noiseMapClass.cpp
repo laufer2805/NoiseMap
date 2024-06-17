@@ -433,26 +433,18 @@ public:
     }
     void PrintSequence (double seed, int length)
     {
-		/*double* seq = new double[length];
+		double* seq = new double[length];
 		seq = GenerateSequence(seed, length);
 		for (int i = 0; i < length; i++)
 		{
 			cout << seq[i] << "\t";
-		}*/
-		cout << Range(15.5, 0, 5);
+		}
 	}
 };
 
 int main (void)
 {
     NoiseMap nm;
-    //nm.GenerateNoiseMap();
-    /*for (int i = 0; i < 10; i++)
-    {
-		nm.PrintSequence(i, 5);
-		cout << endl;
-		
-    }*/
     nm.PrintSequence(5, 2);
 	return 0;
 }
