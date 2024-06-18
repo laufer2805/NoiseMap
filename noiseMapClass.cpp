@@ -256,7 +256,7 @@ class NoiseMap
         DrawCircle -> 4 random numbers -> 8 seed numbers
     */
 private:
-    // helper functions
+    // helper functions - math
     bool IsPrime(int number)
     {
         if (number == 1 || number == 0) return false;
@@ -265,6 +265,11 @@ private:
             if (number % i == 0) return false;
         }
         return true;
+    }
+    bool IsDivisible(int n, int divisor)
+    {
+        if (n % divisor == 0) return true;
+        return false;
     }
     int Factorial(int n)
     {
@@ -287,29 +292,98 @@ private:
         return sum;
     }
     
-    double Range (double number,double min, double max)
+    double AverageFromWord(string seedWord)
     {
-		double decimals = number - (int)number;
-		int numberInt = (int)number;
-		int range = (int)max - (int)min;
-		numberInt = numberInt % range;
-		return (double)numberInt + min + decimals;
-	}
-    
-    double* GenerateSequence (double seed, int size)
-    {
-		// for size < 10
-		double* sequence = new double[size];
-		int iterator = 0;
-		for (double i = 0; i < size; i++)
-		{
-			double temp1 = sin(Exp(Range(i, ), temp2 = Exp(sin(seed + (double)i/(double)size));
-			sequence[iterator] = rng.noise2D(temp1, temp2);
-			iterator++;
-		}
-		return sequence;
-	}
+        int len = seedWord.length();
+        int sum = 0;
+        for (int i = 0; i < len; i++)
+        {
+            sum += seedWord[i];
+        }
+        return (double)sum / (double)len;
+    }
 
+    double RandomNumberInRange(double seed1, double seed2, double min, double max)
+    {
+        double random = rng.noise2D(seed1, seed2);
+        if (random + min < min)
+        {
+            random *= (-1);
+        }
+        if (min < random && random < max)
+        {
+            return random;
+        }
+        if (min + random < max)
+        {
+            return min + random;
+        }
+        int randomInt = (int)random;
+        double randomDecimals = random - randomInt;
+        int razlika = (int)(max - min);
+        if (razlika < 1)
+        {
+            razlika = (int)(100000 * (max - min));
+            randomInt = randomInt % razlika;
+            random = (double)randomInt / (double)100000;
+            return min + random;
+        }
+        return min + (randomInt % razlika) + randomDecimals;
+    }
+
+    // min inclusive, max exclusive
+    int RandomInRangeInt(double seed1, double seed2, int min, int max)
+    {
+        int random = (int)rng.noise2D(seed1, seed2);
+        int razlika = max - min;
+        return min + (random % razlika);
+    }
+    
+    int* GenerateSequenceIntInRange(double seed1, double seed2, int length, int min, int max)
+    {
+        int* seq = new int[length];
+        for (int i = 0; i < length; i++)
+        {
+            seq[i] = RandomInRangeInt(seed1 + (double)i, seed2 + (double)i, min, max);
+        }
+        return seq;
+    }
+
+    //helper functions - draw
+    void DrawCircle(int centerX, int centerY, int radius, int colorIndex)
+    {
+        for (int i = centerX - radius; i < centerX + radius; i++)
+        {
+            for (int j = centerY - radius; i < centerY + radius; j++)
+            {
+                if (pow(i - centerX, 2) + pow(j - centerY, 2) < pow(radius, 2))
+                {
+                    image[i][j] = colorIndex;
+                }
+            }
+        }
+    }
+
+    void DrawSquareFill(int startX, int startY, int side, int colorIndex)
+    {
+        for (int i = startX; i < startX + side; i++)
+        {
+            for (int j = startY; j < startY + side; j++)
+            {
+                image[i][j] = colorIndex;
+            }
+        }
+    }
+    void DrawSquareLimit(int startX, int startY, int side, int colorIndex)
+    {
+        for (int i = 0; i < side; i++)
+        {
+            a[i][startY] = 1;
+            a[i][startY + side - 1] = 1;
+            a[startX][i] = 1;
+            a[startX + side - 1][i] = 1;
+        }
+    }
 public:
     string seedWord;
     int sizeX, sizeY, startX, startY, paletteSize;
@@ -361,31 +435,20 @@ public:
 
     void FillArray ()
     {
-        int seedWordLength = seedWord.length();
-        int sizeMin;
-        if (sizeX < sizeY) sizeMin = sizeX;
-        sizeMin = sizeY;
-        int* seedWordArray = new int[seedWordLength];
-        for (int i = 0; i < seedWordLength; i++)
-        {
-            seedWordArray[i] = (int)seedWord[i];
-        }
-        
+         // initial fill
         for (int i = 0; i < sizeX; i++)
         {
-            for (int j = 0; j < sizeX; j++)
+            for (int j = 0; j < sizeY; j++)
             {
-                int temp = (int)rng.noise2D(Exp((double)(i / sizeX)), Exp((double)(j / sizeY)));
-                if (temp < 0) temp *= (-1);
-                if (IsPrime(temp) == true)																		// ovaj section treba prepraviti - tu se poziva noise2D
-                {
-                    DrawCircle(i, j, temp % sizeMin, seedWordArray[temp % seedWordLength] % paletteSize);
-                }
-                else 
-                {
-                    image[i][j] = temp % paletteSize;
-                }
+                image[i][j] = RandomInRangeInt (i + startX, j + startY, 0, 8);
             }
+        }
+        //drawing circles
+        int numOfCircles = RandomInRangeInt(seedWord[0], seedWord[1], 5, 10);
+        int* seq = GenerateSequenceIntInRange(AverageFromWord(seedWord), Exp(AverageFromWord(seedWord)), 4 * numOfCircles, 0, startX);          // treba skužit koja je gornja granica
+        for (int i = 0; i < numOfCircles; i++)
+        {
+            DrawCircle(seq[i], seq[i + 5], seq[i + 6], seq[i + 7]);
         }
     }
 
@@ -423,7 +486,7 @@ public:
         GeneratePalette();
         FillPalette();
 
-        cout << "Generating initial image!" << endl;
+        cout << "Generating image array!" << endl;
         GenerateImageArray();
         cout << "Filling array!" << endl;
         FillArray();
