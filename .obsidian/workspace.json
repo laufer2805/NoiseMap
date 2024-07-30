@@ -33,7 +33,17 @@
             "state": {
               "type": "vscode-editor",
               "state": {
-                "file": "Scripts/NoiseMap.cpp"
+                "file": "Scripts/PseudoRandomNumberGenerator.cpp"
+              }
+            }
+          },
+          {
+            "id": "2d4bc34d5dcb720f",
+            "type": "leaf",
+            "state": {
+              "type": "vscode-editor",
+              "state": {
+                "file": "Scripts/MathLibrary.cpp"
               }
             }
           }
@@ -167,12 +177,12 @@
   },
   "active": "cd84a1587127e468",
   "lastOpenFiles": [
-    "Scripts/NoiseMap.cpp",
+    "Scripts/PseudoRandomNumberGenerator.cpp",
     "ReadMe.md",
+    "Scripts/MathLibrary.cpp",
+    "Scripts/NoiseMap.cpp",
     "Scripts/Color.cpp",
     "Scripts/OpenSimplexNoise.cpp",
-    "Scripts/MathLibrary.cpp",
-    "Scripts/PseudoRandomNumberGenerator.cpp",
     "Archive/Nicholas Yara Water Fanner.ppm",
     "Archive/Nicholas Yara Waltr Fanner.ppm",
     "Archive/Nicholas Yara Walter Fanner.ppm",

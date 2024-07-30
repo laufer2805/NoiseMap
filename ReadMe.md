@@ -15,10 +15,10 @@ script MathLibrary
 	- return value of exponential function at x
 	- calculation by approximation from taylor series, default degree of approximation is 15
 - `double Clamp (double value, double min, double max)`
-	- returns value set between min and max
+	- returns value set between min and max (both inclusive)
 	- calculation through formula using a sine wave
 - `int IntClamp (int value, int min, int max)`
-	- returns value set between min and max
+	- returns value set between min and max (min inclusive, max exclusive)
 	- value determined with remainder formula
 class Color
 - `int r, g, b`
@@ -78,3 +78,18 @@ NoiseMap
 	- `void GenerateNoiseMap (void)`
 		- get imputs: seedWord, sizeX, sizeY, choose palette
 		- generates array, fills array and prints to file `seedWord.ppm` 
+class PseudoRandomNumberGenerator
+- `private OpenSimplexNoise noise`
+	- instance of OpenSimplexNoise
+- public:
+	- `double* GenerateSequence2D (double seedX, seedY, int length`
+		- returns array of random numbers, of length `length`, generated from seedX and seedY
+		- uses noise2D method from class OpenSimplexNoise
+	- `double Range2D(double seedX, seedY, double min, double max)`
+		- returns returns random number in range min, max (inclusive)
+		- uses noise2D method from class OpenSimplexNoise
+	- `double Range2D(double seedX, double seedY, double seedZ, double min, double max)`
+		- returns random number in range min, max (inclusive)
+		- uses noise3D method from class OpenSimplexNoise
+	- `int IntRange2D (int seedX, int seedY, int min, int max)`
+		- returns random int in range min, max (min inclusive, max exclusive)
