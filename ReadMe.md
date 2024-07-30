@@ -1,0 +1,80 @@
+Scripts:
+class OpenSymplexNoise
+-  `double noise2D (double x, double y)`
+	- returns noise2D value at [x,y] point
+- `double noise3D (dobule x, double y, double z)`
+	- returns noise3D value at [x, y, z]
+script MathLibrary
+- `int Factorial (int n)`
+	- returns factorial of n
+	- recursive calculation
+- `double Power (double x, int n)`
+	- returns x to the power of n
+	- recursive calculation
+- `double Exp (double x)`
+	- return value of exponential function at x
+	- calculation by approximation from taylor series, default degree of approximation is 15
+- `double Clamp (double value, double min, double max)`
+	- returns value set between min and max
+	- calculation through formula using a sine wave
+- `int IntClamp (int value, int min, int max)`
+	- returns value set between min and max
+	- value determined with remainder formula
+class Color
+- `int r, g, b`
+	- r, g, b values of specific color (all in range [0,255])
+- `private void HexToDec (std::string colorHex)`
+	- reads string colorHex and stores r, g, b values in object
+- Palette functions:
+	- returns pointer to Color array
+	- list:
+		- SLS08
+		- Twilight5
+		- OIL6
+		- MoonlightGb
+		- Chasm
+NoiseMap
+- Properties:
+	- `Color* palette`
+		- dynamic array of colors for palette
+	- `int paletteLength`
+		- length of palette
+	- `int* seedWordInt`
+		- array of int ascii values for every letter of seedWord
+	- `int vowelCount`
+		- number of vowels in seedWord
+	- `int consonantCount`
+		- number of consonants in seedWord
+	- `int seedWordLength`
+		- number of letters in seedWord
+	- `int sizeX, sizeY`
+		- with and height (respectively) of image to generate
+	- `int** image`
+		- dynamic double array for storing values of color in palette for pixel generation
+	- `std::string seedWord`
+		- seed word used for picture generation
+- Methods:
+- private:
+	- `void ConvertSeedWordToInt (void)`
+		- fills seedWordInt array with int ascii values of seedWord letters
+		- seedWordInt[i] is i-th letter of seedWord in int ascii value
+	- `void SeedWordAnalysis (void)`
+		- calculates vowelCount, consonantCount and seedWordLength
+	- `void DrawCircle (int centerX, int centerY, int radius, bool isFilled, int colorIndex)`
+		- draws circle in `image` array with colorIndex, with center at [centerX, centerY] and of radius `radius`, if isFilled is true draws filled circle, else draws just the perimeter
+	- `void DrawRandomCircles (int numberOfCircles, int colorIndex)`
+		- draws random circles
+	- `void GenerateArray (void)`
+		- assigns 2D array of size [sizeX, sizeY] to `image` pointer
+	- `bool PaletteChooser (int paletteName)`
+		- asigns palette by int paletteName, returns true if correct int passed, false if not
+	- `void InitialFill (void)`
+		- fills `image` array with prng random values in range [0, paletteLength - 1]
+	- `void PrintArray (void)`
+		- prints image array in console - helper function
+	- `void PrintToFile (string name)`
+		- prints to file `name.ppm` at archive directiory
+- public:
+	- `void GenerateNoiseMap (void)`
+		- get imputs: seedWord, sizeX, sizeY, choose palette
+		- generates array, fills array and prints to file `seedWord.ppm` 

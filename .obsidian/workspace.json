@@ -1,0 +1,188 @@
+{
+  "main": {
+    "id": "cd24004aced4ee38",
+    "type": "split",
+    "children": [
+      {
+        "id": "e1e9cd6e5248a19d",
+        "type": "tabs",
+        "dimension": 60.21573604060914,
+        "children": [
+          {
+            "id": "cd84a1587127e468",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "ReadMe.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "5c7a15c4dc275823",
+        "type": "tabs",
+        "dimension": 39.78426395939086,
+        "children": [
+          {
+            "id": "1b52db73aa2ee80b",
+            "type": "leaf",
+            "state": {
+              "type": "vscode-editor",
+              "state": {
+                "file": "Scripts/NoiseMap.cpp"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "850bab72c03f77a0",
+    "type": "split",
+    "children": [
+      {
+        "id": "3bd11c37b2cecfd9",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1e9666ac0c8445b5",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "ed5d036123408bf0",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "202b3fef9f6a982b",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "68d3eb2ada9c388d",
+    "type": "split",
+    "children": [
+      {
+        "id": "9b83492b43dc7a19",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d2328c830a3587a7",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "ReadMe.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "6b13794fea98b27c",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "ReadMe.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "4508d6cbdc1bf2dc",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "a6a1959c155e9df9",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "ReadMe.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "vscode-editor:Create Code File": false
+    }
+  },
+  "active": "cd84a1587127e468",
+  "lastOpenFiles": [
+    "Scripts/NoiseMap.cpp",
+    "ReadMe.md",
+    "Scripts/Color.cpp",
+    "Scripts/OpenSimplexNoise.cpp",
+    "Scripts/MathLibrary.cpp",
+    "Scripts/PseudoRandomNumberGenerator.cpp",
+    "Archive/Nicholas Yara Water Fanner.ppm",
+    "Archive/Nicholas Yara Waltr Fanner.ppm",
+    "Archive/Nicholas Yara Walter Fanner.ppm",
+    "Archive/Perislav.png",
+    "Archive/Jan Bluntić.png",
+    "Archive/Tana Jeblić.png",
+    "Archive/Tana Jeblić.ppm",
+    "Archive/Jan Bluntić.ppm",
+    "Untitled 1.md",
+    "Untitled.md",
+    "Scripts/OpenSimplexNoise.cpp.md"
+  ]
+}
