@@ -1,3 +1,6 @@
+How to use:
+	Run NoiseMap.cpp in scripts folder, input parameters. Algo will generate image in Archive folder
+
 Scripts:
 class OpenSymplexNoise
 -  `double noise2D (double x, double y)`

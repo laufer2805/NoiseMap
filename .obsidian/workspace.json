@@ -6,7 +6,7 @@
       {
         "id": "e1e9cd6e5248a19d",
         "type": "tabs",
-        "dimension": 60.21573604060914,
+        "dimension": 53.93401015228426,
         "children": [
           {
             "id": "cd84a1587127e468",
@@ -25,7 +25,7 @@
       {
         "id": "5c7a15c4dc275823",
         "type": "tabs",
-        "dimension": 39.78426395939086,
+        "dimension": 46.06598984771574,
         "children": [
           {
             "id": "1b52db73aa2ee80b",
@@ -33,7 +33,7 @@
             "state": {
               "type": "vscode-editor",
               "state": {
-                "file": "Scripts/PseudoRandomNumberGenerator.cpp"
+                "file": "Scripts/NoiseMap.cpp"
               }
             }
           },
@@ -113,7 +113,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "ReadMe.md",
+                "file": "Scripts/NoiseMap.cpp",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -130,7 +130,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "ReadMe.md",
+                "file": "Scripts/NoiseMap.cpp",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -153,7 +153,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "ReadMe.md"
+                "file": "Scripts/NoiseMap.cpp"
               }
             }
           }
@@ -175,22 +175,22 @@
       "vscode-editor:Create Code File": false
     }
   },
-  "active": "cd84a1587127e468",
+  "active": "1b52db73aa2ee80b",
   "lastOpenFiles": [
-    "Scripts/PseudoRandomNumberGenerator.cpp",
     "ReadMe.md",
-    "Scripts/MathLibrary.cpp",
-    "Scripts/NoiseMap.cpp",
     "Scripts/Color.cpp",
+    "MyMathVector2.cpp",
+    "MyMathVectorsMatrixDynamic.cpp",
+    "noiseMapClass.cpp",
+    "Scripts/NoiseMap.cpp",
+    "noiseMap.cpp",
+    "Scripts/PseudoRandomNumberGenerator.cpp",
+    "Scripts/MathLibrary.cpp",
     "Scripts/OpenSimplexNoise.cpp",
     "Archive/Nicholas Yara Water Fanner.ppm",
-    "Archive/Nicholas Yara Waltr Fanner.ppm",
-    "Archive/Nicholas Yara Walter Fanner.ppm",
     "Archive/Perislav.png",
     "Archive/Jan Bluntić.png",
     "Archive/Tana Jeblić.png",
-    "Archive/Tana Jeblić.ppm",
-    "Archive/Jan Bluntić.ppm",
     "Untitled 1.md",
     "Untitled.md",
     "Scripts/OpenSimplexNoise.cpp.md"

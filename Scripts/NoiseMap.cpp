@@ -148,6 +148,11 @@ class NoiseMap
         void PrintToFile (string name)
         {
             std::ofstream outFile;
+            // need to check this part of code - should work on c++ 17
+            /*
+                std::filesystem::path cwd = std::filesystem::current_path();
+                outFile.open(cwd + name + ".ppm");
+            */
             outFile.open("/media/data/programming/GitHub/NoiseMap/Archive/" + name + ".ppm");
             outFile << "P3" << endl << sizeX << " " << sizeY << endl << 255 << endl;
             for (int i = 0; i < sizeX; i++)
