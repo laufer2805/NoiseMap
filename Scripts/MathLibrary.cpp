@@ -27,7 +27,11 @@ double Exp (double x)
 	}
 	return sum;
 }
-
+double Min (double value1, double value2)
+{
+    if (value1 < value2) return value1;
+    return value2;
+}
 double Clamp (double value, double min, double max)
 {
 	double range = (max - min) / 2;

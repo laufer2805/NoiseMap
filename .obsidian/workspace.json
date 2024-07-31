@@ -6,7 +6,7 @@
       {
         "id": "e1e9cd6e5248a19d",
         "type": "tabs",
-        "dimension": 53.93401015228426,
+        "dimension": 36.421319796954315,
         "children": [
           {
             "id": "cd84a1587127e468",
@@ -25,7 +25,7 @@
       {
         "id": "5c7a15c4dc275823",
         "type": "tabs",
-        "dimension": 46.06598984771574,
+        "dimension": 63.57868020304569,
         "children": [
           {
             "id": "1b52db73aa2ee80b",
@@ -178,14 +178,14 @@
   "active": "1b52db73aa2ee80b",
   "lastOpenFiles": [
     "ReadMe.md",
+    "Scripts/NoiseMap.cpp",
+    "Scripts/MathLibrary.cpp",
     "Scripts/Color.cpp",
     "MyMathVector2.cpp",
     "MyMathVectorsMatrixDynamic.cpp",
     "noiseMapClass.cpp",
-    "Scripts/NoiseMap.cpp",
     "noiseMap.cpp",
     "Scripts/PseudoRandomNumberGenerator.cpp",
-    "Scripts/MathLibrary.cpp",
     "Scripts/OpenSimplexNoise.cpp",
     "Archive/Nicholas Yara Water Fanner.ppm",
     "Archive/Perislav.png",

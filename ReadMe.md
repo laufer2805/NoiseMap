@@ -62,9 +62,13 @@ NoiseMap
 		- fills seedWordInt array with int ascii values of seedWord letters
 		- seedWordInt[i] is i-th letter of seedWord in int ascii value
 	- `void SeedWordAnalysis (void)`
-		- calculates vowelCount, consonantCount and seedWordLength
+		- calculates vowelCount, consonantCount and seedWordLength, averageLetter (double), number of words (wordCount)
+	- `void DrawLine (int startX, int startY, int endX, int endY, int colorIndex)`
+		- draws line from point (startX, startY) to point (endX, endY) in color colorIndex
 	- `void DrawCircle (int centerX, int centerY, int radius, bool isFilled, int colorIndex)`
 		- draws circle in `image` array with colorIndex, with center at [centerX, centerY] and of radius `radius`, if isFilled is true draws filled circle, else draws just the perimeter
+	- `void DrawRandomLines (int numberOfLines, int colorIndex)`
+		- draws random lines
 	- `void DrawRandomCircles (int numberOfCircles, int colorIndex)`
 		- draws random circles
 	- `void GenerateArray (void)`

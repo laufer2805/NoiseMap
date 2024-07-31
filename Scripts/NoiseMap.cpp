@@ -10,7 +10,8 @@ class NoiseMap
         Color* palette;
         int paletteLength;
         int* seedWordInt;
-        int vowelCount, consonantCount, seedWordLength;
+        int vowelCount, consonantCount, seedWordLength, wordCount;
+        double averageLetter;
         PseudoRandomNumberGenerator prng;
 
         void ConvertSeedWordToInt ()
@@ -28,13 +29,21 @@ class NoiseMap
             seedWordLength = seedWord.length();
             vowelCount = 0;
             consonantCount = 0;
+            wordCount = 1;
+            averageLetter = 0; 
             for (int i = 0; i < seedWordLength; i++)
             {
                 if (seedWord[i] == 'A' || seedWord[i] == 'a' || seedWord[i] == 'E' || seedWord[i] == 'e' || seedWord[i] == 'I' || seedWord[i] == 'i' || seedWord[i] == 'O' || seedWord[i] == 'o' || seedWord[i] == 'U' || seedWord[i] == 'u' )
                 {
                     vowelCount++;
                 }
+                if (seedWord[i] == ' ')
+                {
+                    wordCount++;
+                }
+                averageLetter += seedWord[i];
             }
+            averageLetter /= (double)seedWordLength;
             consonantCount = seedWordLength - vowelCount;
         }
         
@@ -45,7 +54,14 @@ class NoiseMap
                 DrawLine (int startX, int startY, int endX, int endY)
                 
         */
-
+        void DrawLine (int startX, int startY, int endX, int endY, int colorIndex)
+        {
+            for (int i = startX; i <= endX; i++)
+            {
+                int j = (endY - startY)/(endX - startX) * (i - endX) + endY;
+                image[i][j] = colorIndex;
+            }
+        }
         void DrawCircle (int centerX, int centerY, int radius, bool isFilled, int colorIndex)
         {
             for (int i = 0; i < sizeX; i++)
@@ -68,20 +84,45 @@ class NoiseMap
             }
         }
 
+        void DrawRandomLines (int numberOfLines, int colorIndex)
+        {
+            double *startsX, *startsY, *endsX, *endsY;
+            // need to check if starts and ends are good
+            double *tempSeq;
+            tempSeq = prng.GenerateSequence2D (averageLetter, (double)wordCount, 8);
+            startsX = prng.GenerateSequence2D (tempSeq[0], tempSeq[1], numberOfLines);
+            startsY = prng.GenerateSequence2D (tempSeq[2], tempSeq[3], numberOfLines);
+            endsX = prng.GenerateSequence2D (tempSeq[4], tempSeq[5], numberOfLines);
+            endsY = prng.GenerateSequence2D (tempSeq[6], tempSeq[7], numberOfLines);
+            for (int i = 0; i < numberOfLines; i++)
+            {
+                startsX[i] = Clamp (startsX[i], 0, sizeX);
+                endsX[i] = Clamp (endsX[i], 0, sizeX);
+                startsY[i] = Clamp (startsY[i], 0, sizeY);
+                endsY[i] = Clamp (endsY[i], 0, sizeY);
+                DrawLine (startsX[i], startsY[i], endsX[i], endsY[i], colorIndex);
+            }
+        }
+
         void DrawRandomCircles (int numberOfCircles, int colorIndex)
         {
             // needed random numbers: centerX, centerY, radius
+            /*
+                algo:
+                radii depend on numberOfCircles - min = 5, max = minSize / numberOfCircles
+            */
             double *centersX, *centersY, *radii;
             double *tempSeq;
-            tempSeq = prng.GenerateSequence2D ((double)vowelCount, (double)consonantCount, 6);
-            centersX = prng.GenerateSequence2D((double)tempSeq[0], (double)tempSeq[1], numberOfCircles);
-            centersY = prng.GenerateSequence2D((double)tempSeq[2], (double)tempSeq[3], numberOfCircles);
-            radii = prng.GenerateSequence2D((double)tempSeq[4], (double)seedWordInt[5], numberOfCircles);
+            tempSeq = prng.GenerateSequence2D ((double)vowelCount, (double)wordCount, 6);
+            centersX = prng.GenerateSequence2D(tempSeq[0], tempSeq[1], numberOfCircles);
+            centersY = prng.GenerateSequence2D(tempSeq[2], tempSeq[3], numberOfCircles);
+            radii = prng.GenerateSequence2D(tempSeq[4], tempSeq[5], numberOfCircles);
+            double minSize = Min((double)sizeX, (double)sizeY);
             for (int i = 0; i < numberOfCircles; i++)
             {
                 centersX[i] = Clamp (centersX[i], 0, sizeX);
                 centersY[i] = Clamp (centersY[i], 0, sizeY);
-                radii[i] = Clamp (radii[i], 0, sizeX/4);
+                radii[i] = Clamp (radii[i], 5, minSize / (double)numberOfCircles);
                 DrawCircle ((int)centersX[i], (int)centersY[i], (int)radii[i], true, colorIndex);
             }
         }
@@ -198,6 +239,7 @@ class NoiseMap
             InitialFill ();
             std::cout << "Initial fill done" << std::endl;
             DrawRandomCircles (vowelCount, consonantCount % paletteLength);
+            DrawRandomLines ((int)averageLetter, wordCount % paletteLength);
             std::cout << "DrawRandomCircles done" << std::endl;
             
             // output
